@@ -5,8 +5,9 @@
  */
 
 /dts-v1/;
-#include <nordic/nrf5340_cpuappns_qkaa.dtsi>
+#include <arm/nordic/nrf5340_cpuapp_ns_qkaa.dtsi>
 #include "nrf5340_cpuapp_common.dtsi"
+#include <../boards/common/usb/cdc_acm_serial.dtsi>
 
 / {
 	model = "Bitmask BMD100 NRF5340 Application";
@@ -18,3 +19,6 @@
 		zephyr,code-partition = &slot0_ns_partition;
 	};
 };
+
+/* Include default memory partition configuration file */
+#include <nordic/nrf5340_cpuapp_ns_partition.dtsi>
