@@ -19,7 +19,8 @@
     buttons {
         compatible = "gpio-keys";
         button0: button_0 {
-            gpios = <&gpio0 9 (GPIO_ACTIVE_HIGH)>;
+            /* SW1 shorts P0.09 to GND, with no external pull-up */
+            gpios = <&gpio0 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
             label = "Push button 1";
             zephyr,code = <INPUT_KEY_0>;
         };

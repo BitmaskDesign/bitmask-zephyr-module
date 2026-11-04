@@ -4,5 +4,21 @@
  */
 
 &pinctrl {
+	/* RGB LED: red P1.02, green P0.03, blue P0.02 */
+	pwm0_default: pwm0_default {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 1, 2)>,
+				<NRF_PSEL(PWM_OUT1, 0, 3)>,
+				<NRF_PSEL(PWM_OUT2, 0, 2)>;
+		};
+	};
 
+	pwm0_sleep: pwm0_sleep {
+		group1 {
+			psels = <NRF_PSEL(PWM_OUT0, 1, 2)>,
+				<NRF_PSEL(PWM_OUT1, 0, 3)>,
+				<NRF_PSEL(PWM_OUT2, 0, 2)>;
+			low-power-enable;
+		};
+	};
 };
