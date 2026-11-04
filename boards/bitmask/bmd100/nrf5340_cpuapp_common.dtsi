@@ -60,6 +60,19 @@
 	};
 };
 
+/* Crystals with no external load capacitors: use the SoC's internal ones */
+&hfxo {
+	/* XL7EL89CKI-111YLC-32M, 8 pF load */
+	load-capacitors = "internal";
+	load-capacitance-femtofarad = <8000>;
+};
+
+&lfxo {
+	/* XKXEL89CLI-SUAYLC-32.768K, 9 pF load */
+	load-capacitors = "internal";
+	load-capacitance-picofarad = <9>;
+};
+
 &pwm0 {
 	status = "okay";
 	pinctrl-0 = <&pwm0_default>;
