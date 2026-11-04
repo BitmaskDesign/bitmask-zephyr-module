@@ -62,13 +62,24 @@
 
 /* Crystals with no external load capacitors: use the SoC's internal ones */
 &hfxo {
-	/* XL7EL89CKI-111YLC-32M, 8 pF load */
+	/*
+	 * XL7EL89CKI-111YLC-32M, CL = 8 pF. The internal capacitors sit from
+	 * each pin to ground, so the crystal sees two of them in series:
+	 * CL = (C_int + C_pin + C_pcb) / 2, with C_pin = 2.5 pF (nRF5340 PS,
+	 * internal capacitors enabled) and C_pcb about 1 pF. That gives
+	 * C_int = 2 * 8 - 2.5 - 1 = 12.5 pF. Fine-tune by measuring the
+	 * carrier offset if needed.
+	 */
 	load-capacitors = "internal";
-	load-capacitance-femtofarad = <8000>;
+	load-capacitance-femtofarad = <12500>;
 };
 
 &lfxo {
-	/* XKXEL89CLI-SUAYLC-32.768K, 9 pF load */
+	/*
+	 * XKXEL89CLI-SUAYLC-32.768K, CL = 9 pF. The internal capacitor sits
+	 * across the crystal and includes the pin capacitance, so it matches
+	 * the crystal's CL directly (nRF5340 PS).
+	 */
 	load-capacitors = "internal";
 	load-capacitance-picofarad = <9>;
 };
