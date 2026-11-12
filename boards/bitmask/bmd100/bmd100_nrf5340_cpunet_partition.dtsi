@@ -1,0 +1,45 @@
+/*
+ * Copyright (c) 2026 Bitmask Ltd
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Network core flash layout of a BMD100 as shipped, the same as NCS's
+ * smp_svr sample: the b0n bootloader, its provisioning data, and one image.
+ *
+ * The network core image is updated through the application core's MCUboot
+ * (upload it to slot 3), which hands it over by PCD; b0n then copies it into
+ * s0_partition. Build it with sysbuild and these settings:
+ *
+ *   SB_CONFIG_SECURE_BOOT_NETCORE=y
+ *   SB_CONFIG_NETCORE_APP_UPDATE=y
+ *
+ * b0n checks the image's SHA-256 hash; images are not signed.
+ */
+
+&flash1 {
+	partitions {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		b0n_partition: partition@0 {
+			compatible = "zephyr,mapped-partition";
+			label = "b0n";
+			reg = <0x00000000 0x8580>;
+		};
+
+		bl_storage: provision_partition: partition@8580 {
+			compatible = "zephyr,mapped-partition";
+			label = "b0-provision-data";
+			reg = <0x00008580 0x280>;
+		};
+
+		s0_partition: partition@8800 {
+			compatible = "zephyr,mapped-partition";
+			label = "image-0";
+			reg = <0x00008800 DT_SIZE_K(222)>;
+		};
+	};
+};

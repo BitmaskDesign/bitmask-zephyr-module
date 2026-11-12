@@ -33,5 +33,5 @@
 	};
 };
 
-/* Include default memory partition configuration file */
-#include <nordic/nrf5340_cpuapp_partition.dtsi>
+/* Flash layout of a BMD100 as shipped: MCUboot, one application slot, settings */
+#include "bmd100_nrf5340_cpuapp_partition.dtsi"
