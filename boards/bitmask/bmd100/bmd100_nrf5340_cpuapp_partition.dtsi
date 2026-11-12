@@ -1,0 +1,62 @@
+/*
+ * Copyright (c) 2026 Bitmask Ltd
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Application core flash layout of a BMD100 as shipped.
+ *
+ * Every BMD100 leaves the factory with MCUboot in single-slot mode, updated
+ * in place through USB serial recovery: hold the button at reset, or set the
+ * boot mode retention to BOOT_MODE_TYPE_BOOTLOADER and reboot. An
+ * application must be linked into slot0_partition below to boot, so build
+ * it with sysbuild and these settings:
+ *
+ *   SB_CONFIG_BOOTLOADER_MCUBOOT=y
+ *   SB_CONFIG_MCUBOOT_MODE_SINGLE_APP=y
+ *   SB_CONFIG_BOOT_SIGNATURE_TYPE_NONE=y
+ *
+ * and upload zephyr.signed.bin to slot 1 (MCUboot's direct-upload numbering).
+ * Images are hash-checked, not signed.
+ *
+ * MCUboot gets 80 KB because its USB serial recovery needs more than the
+ * usual 64 KB, and its size can't change on shipped boards. With no
+ * secondary slot, the application gets 912 KB.
+ */
+
+&flash0 {
+	partitions {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		boot_partition: partition@0 {
+			compatible = "zephyr,mapped-partition";
+			label = "mcuboot";
+			reg = <0x00000000 DT_SIZE_K(80)>;
+		};
+
+		slot0_partition: partition@14000 {
+			compatible = "zephyr,mapped-partition";
+			label = "image-0";
+			reg = <0x00014000 DT_SIZE_K(912)>;
+		};
+
+		storage_partition: partition@f8000 {
+			compatible = "zephyr,mapped-partition";
+			label = "storage";
+			reg = <0x000f8000 DT_SIZE_K(32)>;
+		};
+	};
+};
+
+/* The rest as in Zephyr's nrf5340_cpuapp_partition.dtsi */
+&uicr {
+	bl_storage: uicr@100 {
+		reg = <0x100 0x280>;
+	};
+};
+
+#include <nordic/nrf5340_sram_partition.dtsi>
+#include <nordic/nrf5340_shared_sram_partition.dtsi>
