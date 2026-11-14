@@ -4,8 +4,8 @@ This repository contains a [Zephyr Module](https://docs.zephyrproject.org/latest
 
 The module includes board definition files for the following devices:
 
-- BMD100
-- BMES100
+- [BMD100](https://bitmask.co.uk/products/bmd100/)
+- [BMES100](https://bitmask.co.uk/products/bmes100/)
 
 ## Setup
 
@@ -23,10 +23,11 @@ manifest:
 
 After updating the `west.yml` file, run `west update` to download and import the module.
 
-
 ## Board documentation
 
-- [BMD100](boards/bitmask/bmd100/README.md): the flash layout BMD100 boards ship with, and how to load your own firmware over USB.
+Each board definition also has its own documentation:
+
+- [BMD100](boards/bitmask/bmd100/README.md)
 
 ## Notes
 
